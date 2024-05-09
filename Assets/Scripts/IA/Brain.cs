@@ -4,6 +4,12 @@ public class Brain : MonoBehaviour
 {
     protected State _currentState;
 
+    // States
+    protected IdleState _idle = new();
+    protected ProtectState _protect = new();
+    protected DestructState _destruct = new();
+    protected FollowState _follow = new();
+
     private void Update()
     {
         _currentState?.OnUpdate();
