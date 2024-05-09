@@ -5,6 +5,7 @@ using UnityEngine;
 public class Asteroid : Entity
 {
     public static event Action<float> OnDamageInflicted;
+    public static event Action<Asteroid> OnAbsorb;
 
     [SerializeField, Tag] private string _blobTag;
 
@@ -13,22 +14,28 @@ public class Asteroid : Entity
     [SerializeField] private float _bigSizeChance = 10;
 
     public float Damage { get; private set; }
-
-    private Emotion _emotion;
+    public EmotionType Emotion { get; private set; }
 
     private void Awake()
     {
-        _emotion = (Emotion)UnityEngine.Random.Range(0, Enum.GetValues(typeof(Emotion)).Length);
+        Emotion = (EmotionType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EmotionType)).Length);
         SetAsteroidSize();
         SetPositionOutsideViewport();
 
-        gameObject.name = $"Asteroid of {Enum.GetName(typeof(Emotion), _emotion)} [#{GameManager.Instance.Mod<WavesModule>().EnemiesSpawned + 1}]";
+        gameObject.name = $"Asteroid of {Enum.GetName(typeof(EmotionType), Emotion)} [#{GameManager.Instance.Mod<WavesModule>().EnemiesSpawned + 1}]";
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag(_blobTag)) return;
         OnDamageInflicted?.Invoke(Damage);
+        Death();
+    }
+
+    private void OnMouseDown()
+    {
+        if (!GameManager.Instance.CanTouch) return;
+        OnAbsorb?.Invoke(this);
         Death();
     }
 

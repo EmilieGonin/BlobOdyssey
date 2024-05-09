@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _asteroidPrefab;
 
     public Blob Blob { get; private set; }
+    public bool CanTouch { get; set; }
 
     public GameObject BlobPrefab => _blobPrefab;
     public GameObject AsteroidPrefab => _asteroidPrefab;
