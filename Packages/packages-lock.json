@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.baracuda.runtime-monitoring": {
-      "version": "file:com.baracuda.runtime-monitoring",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.unity.2d.animation": {
       "version": "9.1.0",
       "depth": 1,
@@ -245,7 +239,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
