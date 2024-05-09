@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Brain : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    protected State _currentState;
+
+    private void Update()
     {
-        
+        _currentState?.OnUpdate();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeState(State state)
     {
-        
+        _currentState?.OnExit();
+        _currentState = state;
+        _currentState.OnEnter(this);
     }
 }

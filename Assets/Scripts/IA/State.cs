@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class State : MonoBehaviour
+public class State
 {
-    // Start is called before the first frame update
-    void Start()
+    protected Brain _brain;
+
+    public virtual void OnEnter(Brain brain)
     {
-        
+        _brain = brain;
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void OnUpdate()
     {
-        
+        //
+    }
+
+    public virtual void OnExit()
+    {
+        //
     }
 }
