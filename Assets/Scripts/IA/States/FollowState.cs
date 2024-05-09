@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowState : MonoBehaviour
+public class FollowState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    private Vector3 _targetPosition;
+
+    public override void OnEnter(Brain brain)
     {
-        
+        base.OnEnter(brain);
+        _targetPosition = GameManager.Instance.Blob.transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnUpdate()
     {
-        
+        base.OnUpdate();
+        _brain.transform.position = Vector3.MoveTowards(_brain.transform.position, _targetPosition, (_brain as AsteroidBrain).Speed * Time.deltaTime);
     }
 }
