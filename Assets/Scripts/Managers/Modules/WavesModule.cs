@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WavesModule : Module
 {
+    public static event Action OnWaveStart;
+    public static event Action OnWaveVictory;
+
     [Header("Settings")]
     [SerializeField] private int _enemiesPerWave = 10;
     [SerializeField] private float _minSpawnCooldown = 1;
     [SerializeField] private float _maxSpawnCooldown = 3;
+
+    public int EnemiesSpawned => _enemiesSpawned.Count;
 
     private int _enemiesKilled;
     private int _waveNumber = 1;
@@ -39,6 +45,7 @@ public class WavesModule : Module
 
     public void StartWave()
     {
+        OnWaveStart?.Invoke();
         _spawner = StartCoroutine(SpawnEnemies());
     }
 
@@ -51,7 +58,7 @@ public class WavesModule : Module
         {
             GameObject asteroid = Instantiate(_manager.AsteroidPrefab);
             _enemiesSpawned.Add(asteroid);
-            yield return new WaitForSeconds(Random.Range(_minSpawnCooldown, _maxSpawnCooldown));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(_minSpawnCooldown, _maxSpawnCooldown));
         }
 
         yield return null;
@@ -59,12 +66,14 @@ public class WavesModule : Module
 
     private void NextWave()
     {
+        OnWaveVictory?.Invoke();
         _waveNumber++;
         StartWave();
     }
 
     private void GameOver()
     {
+        Debug.Log("<color=red>Game over !</color>");
         if (_spawner != null) StopCoroutine(_spawner);
         foreach (var asteroid in _enemiesSpawned) if (asteroid != null) Destroy(asteroid);
 
