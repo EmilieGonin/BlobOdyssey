@@ -18,12 +18,17 @@ public class Asteroid : Entity
 
     private void Awake()
     {
+        DestroyAction.OnActivate += Death;
+
         Emotion = (EmotionType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(EmotionType)).Length);
+
         SetAsteroidSize();
         SetPositionOutsideViewport();
 
         gameObject.name = $"Asteroid of {Enum.GetName(typeof(EmotionType), Emotion)} [#{GameManager.Instance.Mod<WavesModule>().EnemiesSpawned + 1}]";
     }
+
+    private void OnDestroy() => DestroyAction.OnActivate -= Death;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
