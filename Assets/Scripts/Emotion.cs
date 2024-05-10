@@ -19,4 +19,5 @@ public class Emotion
 
     public void Add(float value) => Value += value;
     public void Substract(float value) => Value -= value;
+    public void LevelUp() => Level++;
 }

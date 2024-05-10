@@ -20,8 +20,17 @@ public class WavesModule : Module
     private Coroutine _spawner;
     private List<GameObject> _enemiesSpawned;
 
-    private void Awake() => Entity.OnDeath += Entity_OnDeath;
-    private void OnDestroy() => Entity.OnDeath -= Entity_OnDeath;
+    private void Awake()
+    {
+        Entity.OnDeath += Entity_OnDeath;
+        PowerPopup.OnEmotionSelect += Victory;
+    }
+
+    private void OnDestroy()
+    {
+        Entity.OnDeath -= Entity_OnDeath;
+        PowerPopup.OnEmotionSelect -= Victory;
+    }
 
     private void Entity_OnDeath(Entity entity)
     {
@@ -57,7 +66,7 @@ public class WavesModule : Module
         yield return null;
     }
 
-    private void Victory()
+    private void Victory(EmotionType emotion = EmotionType.Joy)
     {
         OnWaveEnd?.Invoke(true);
         _waveNumber++;

@@ -15,15 +15,17 @@ public class Blob : Entity
     public float MaxHealth => _maxHealth;
     public float CurrentHealth { get; private set; }
     public Dictionary<EmotionType, Emotion> Emotions { get; private set; }
+    public List<EmotionType> StrongestEmotions { get; private set; } = new();
 
     private Coroutine _regen;
 
     private void Awake()
     {
-        WavesModule.OnWaveStart += InitHealth;
+        WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
         Asteroid.OnDamageInflicted += Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb += Asteroid_OnAbsorb;
-        ProtectAction.OnActivate += ProtectAction_OnActivate;
+        ProtectAction.OnActivate += ToggleProtection;
+        PowerPopup.OnEmotionSelect += LevelUpEmotion;
 
         InitHealth();
         InitEmotions();
@@ -31,10 +33,11 @@ public class Blob : Entity
 
     private void OnDestroy()
     {
-        WavesModule.OnWaveStart -= InitHealth;
+        WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
         Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
-        ProtectAction.OnActivate -= ProtectAction_OnActivate;
+        ProtectAction.OnActivate -= ToggleProtection;
+        PowerPopup.OnEmotionSelect -= LevelUpEmotion;
     }
 
     private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
@@ -46,6 +49,7 @@ public class Blob : Entity
     {
         CurrentHealth -= damage;
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
+        LoseEmotions();
     }
     #endregion
 
@@ -74,17 +78,49 @@ public class Blob : Entity
 
     private void SetEmotion(EmotionType currentEmotion = EmotionType.Joy)
     {
+        StrongestEmotions.Clear();
+        float maxEmotionValue = 0;
+
         foreach (EmotionType emotion in Enum.GetValues(typeof(EmotionType)))
         {
-            if (Emotions[emotion].Value > Emotions[currentEmotion].Value) currentEmotion = emotion;
+            float emotionValue = Emotions[emotion].Value;
+
+            if (emotionValue > maxEmotionValue)
+            {
+                maxEmotionValue = emotionValue;
+                StrongestEmotions.Clear();
+                StrongestEmotions.Add(emotion);
+            }
+            else if (emotionValue == maxEmotionValue)
+            {
+                StrongestEmotions.Add(emotion);
+            }
         }
 
+        if (!StrongestEmotions.Contains(currentEmotion)) currentEmotion = StrongestEmotions[0];
+
         _renderer.color = EmotionPalette.GetColor(currentEmotion);
+    }
+
+    private void LevelUpEmotion(EmotionType emotion)
+    {
+        Emotions[emotion].LevelUp();
+
+        switch (emotion)
+        {
+            case EmotionType.Sadness:
+                _maxHealth += 10;
+                InitHealth();
+                break;
+            case EmotionType.Fear:
+                GameManager.Instance.AddCharge();
+                break;
+        }
     }
     #endregion
 
     #region Protect Action
-    private void ProtectAction_OnActivate(bool activated)
+    private void ToggleProtection(bool activated)
     {
         if (activated) _regen = StartCoroutine(Regen());
         else if (_regen != null) StopCoroutine(_regen);
@@ -104,7 +140,6 @@ public class Blob : Entity
     private void Asteroid_OnDamageInflicted(float damage)
     {
         TakeDamage(damage);
-        LoseEmotions();
         SetEmotion();
         if (IsDead()) Death();
     }
@@ -113,10 +148,15 @@ public class Blob : Entity
     {
         float damage = (asteroid.Damage / 2) / Emotions[EmotionType.Joy].Level;
         TakeDamage(damage);
-        LoseEmotions();
         GainEmotion(asteroid.Emotion);
         SetEmotion(asteroid.Emotion);
         if (IsDead()) Death();
+    }
+
+    private void WavesModule_OnWaveEnd(bool win)
+    {
+        InitHealth();
+        if (!win) InitEmotions();
     }
 
     private bool IsDead()
