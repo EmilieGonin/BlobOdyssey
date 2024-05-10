@@ -23,13 +23,15 @@ public class WavesModule : Module
     private void Awake()
     {
         Entity.OnDeath += Entity_OnDeath;
-        PowerPopup.OnEmotionSelect += Victory;
+        PowerPopup.OnEmotionSelect += StartWave;
+        GameOverPopup.OnRestart += StartWave;
     }
 
     private void OnDestroy()
     {
         Entity.OnDeath -= Entity_OnDeath;
-        PowerPopup.OnEmotionSelect -= Victory;
+        PowerPopup.OnEmotionSelect -= StartWave;
+        GameOverPopup.OnRestart -= StartWave;
     }
 
     private void Entity_OnDeath(Entity entity)
@@ -51,6 +53,8 @@ public class WavesModule : Module
         _spawner = StartCoroutine(SpawnEnemies());
     }
 
+    public void StartWave(EmotionType emotion = EmotionType.Joy) => StartWave();
+
     private IEnumerator SpawnEnemies()
     {
         _enemiesSpawned = new();
@@ -66,11 +70,11 @@ public class WavesModule : Module
         yield return null;
     }
 
-    private void Victory(EmotionType emotion = EmotionType.Joy)
+    private void Victory()
     {
         OnWaveEnd?.Invoke(true);
         _waveNumber++;
-        StartWave();
+        StartWave(); // TODO -> show victory popup instead
     }
 
     private void GameOver()
@@ -80,6 +84,6 @@ public class WavesModule : Module
         if (_spawner != null) StopCoroutine(_spawner);
         foreach (var asteroid in _enemiesSpawned) if (asteroid != null) Destroy(asteroid);
 
-        StartWave();
+        StartWave(); // TODO -> show game over popup instead
     }
 }
