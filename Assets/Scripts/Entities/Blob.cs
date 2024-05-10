@@ -35,11 +35,7 @@ public class Blob : Entity
         ProtectAction.OnActivate -= ProtectAction_OnActivate;
     }
 
-    private void Update()
-    {
-        _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
-    }
-
+    private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
     private void InitHealth() => CurrentHealth = _maxHealth;
     private void TakeDamage(float damage) => Mathf.Clamp(CurrentHealth -= damage, 0, _maxHealth);
     private void LoseEmotions() { foreach (var emotion in Enum.GetValues(typeof(EmotionType))) Emotions[(EmotionType)emotion].Substract(10); }
@@ -75,7 +71,7 @@ public class Blob : Entity
     {
         while (true)
         {
-            Mathf.Clamp(CurrentHealth + (1 * Emotions[EmotionType.Fear].Level), 0, _maxHealth);
+            Mathf.Clamp(CurrentHealth += (1 * Emotions[EmotionType.Fear].Level), 0, _maxHealth);
             yield return new WaitForSeconds(1);
         }
     }
