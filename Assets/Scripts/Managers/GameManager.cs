@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _asteroidPrefab;
 
     [Header("Settings")]
-    [SerializeField] private int _maxDestructionCharges = 5;
+    [SerializeField] private int _maxDestructionCharges = 3;
 
     public Blob Blob { get; private set; }
     public bool CanTouch { get; set; }
