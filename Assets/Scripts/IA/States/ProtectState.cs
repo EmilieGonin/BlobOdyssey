@@ -5,10 +5,4 @@ public class ProtectState : State
         base.OnEnter(brain);
         GameManager.Instance.CanTouch = false;
     }
-
-    public override void OnUpdate()
-    {
-        base.OnUpdate();
-        // TODO -> regen
-    }
 }

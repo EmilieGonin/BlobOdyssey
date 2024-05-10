@@ -20,15 +20,8 @@ public class WavesModule : Module
     private Coroutine _spawner;
     private List<GameObject> _enemiesSpawned;
 
-    private void Awake()
-    {
-        Entity.OnDeath += Entity_OnDeath;
-    }
-
-    private void OnDestroy()
-    {
-        Entity.OnDeath -= Entity_OnDeath;
-    }
+    private void Awake() => Entity.OnDeath += Entity_OnDeath;
+    private void OnDestroy() => Entity.OnDeath -= Entity_OnDeath;
 
     private void Entity_OnDeath(Entity entity)
     {
