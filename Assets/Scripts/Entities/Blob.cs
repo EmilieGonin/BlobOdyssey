@@ -68,7 +68,7 @@ public class Blob : Entity
     {
         while (true)
         {
-            Mathf.Clamp(CurrentHealth + (1 * Emotions[EmotionType.Sadness].Level), 0, _maxHealth);
+            Mathf.Clamp(CurrentHealth + (1 * Emotions[EmotionType.Fear].Level), 0, _maxHealth);
             yield return new WaitForSeconds(1);
         }
     }
