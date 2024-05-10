@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Blob : Entity
 {
+    [SerializeField] private ProgressBar _healthBar;
+
     [Header("Stats")]
     [SerializeField] private float _maxHealth = 20;
 
@@ -31,6 +33,11 @@ public class Blob : Entity
         Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
         ProtectAction.OnActivate -= ProtectAction_OnActivate;
+    }
+
+    private void Update()
+    {
+        _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
     }
 
     private void InitHealth() => CurrentHealth = _maxHealth;

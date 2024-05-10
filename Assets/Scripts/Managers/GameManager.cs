@@ -50,10 +50,15 @@ public class GameManager : MonoBehaviour
     }
 
     public T Mod<T>() where T : Module => _modules.OfType<T>().First();
-    private void Module_OnModuleLoaded() { if (_initializedModules++ == _modules.Count) CompleteInit(); }
     private void SpawnBlob() => Blob = Instantiate(BlobPrefab).GetComponent<Blob>();
     public void AddCharge() => Mathf.Clamp(DestructionCharges++, 0, _maxDestructionCharges);
     public void RemoveCharge() => DestructionCharges--;
+
+    private void Module_OnModuleLoaded()
+    {
+        _initializedModules++;
+        if (_initializedModules == _modules.Count) CompleteInit();
+    }
 
     private void CompleteInit()
     {
