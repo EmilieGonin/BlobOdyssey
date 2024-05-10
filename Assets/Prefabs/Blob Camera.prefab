@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2322571763936929633}
   - component: {fileID: 169574246763996071}
   - component: {fileID: 9140534155519027447}
+  - component: {fileID: 8150064760063553934}
   m_Layer: 0
   m_Name: Blob Camera
   m_TagString: MainCamera
@@ -68,7 +69,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 0.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -92,3 +93,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87574634814376045}
   m_Enabled: 1
+--- !u!114 &8150064760063553934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87574634814376045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80ca741af5fda7343a38b83fcc8a2563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wireColor: {r: 1, g: 1, b: 1, a: 1}
+  UnitsSize: 1
+  constraint: 1
+  camera: {fileID: 169574246763996071}
