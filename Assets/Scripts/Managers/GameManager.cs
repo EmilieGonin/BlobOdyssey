@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject _blobPrefab;
     [SerializeField] private GameObject _asteroidPrefab;
+
+    [Header("Dependencies")]
+    [SerializeField] private TMP_Text _chargesNumber;
 
     [Header("Settings")]
     [SerializeField] private int _maxDestructionCharges = 3;
@@ -40,19 +44,32 @@ public class GameManager : MonoBehaviour
         DestructionCharges = _maxDestructionCharges;
 
         Module.OnModuleLoaded += Module_OnModuleLoaded;
-        WavesModule.OnWaveStart += AddCharge;
+        WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
     }
 
     private void OnDestroy()
     {
         Module.OnModuleLoaded -= Module_OnModuleLoaded;
-        WavesModule.OnWaveStart -= AddCharge;
+        WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
     }
+
+    private void Update() => _chargesNumber.text = $"x {DestructionCharges}";
 
     public T Mod<T>() where T : Module => _modules.OfType<T>().First();
     private void SpawnBlob() => Blob = Instantiate(BlobPrefab).GetComponent<Blob>();
-    public void AddCharge() => Mathf.Clamp(DestructionCharges++, 0, _maxDestructionCharges);
     public void RemoveCharge() => DestructionCharges--;
+
+    public void AddCharge()
+    {
+        DestructionCharges++;
+        DestructionCharges = Mathf.Clamp(DestructionCharges, 0, _maxDestructionCharges);
+    }
+
+    private void WavesModule_OnWaveEnd(bool win)
+    {
+        if (win) AddCharge();
+        else DestructionCharges = _maxDestructionCharges;
+    }
 
     private void Module_OnModuleLoaded()
     {

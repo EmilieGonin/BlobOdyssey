@@ -37,7 +37,6 @@ public class Blob : Entity
 
     private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
     private void InitHealth() => CurrentHealth = _maxHealth;
-    private void TakeDamage(float damage) => Mathf.Clamp(CurrentHealth -= damage, 0, _maxHealth);
     private void LoseEmotions() { foreach (var emotion in Enum.GetValues(typeof(EmotionType))) Emotions[(EmotionType)emotion].Substract(10); }
 
     public void InitEmotions()
@@ -48,6 +47,12 @@ public class Blob : Entity
         {
             Emotions[(EmotionType)emotion] = new Emotion((EmotionType)emotion);
         }
+    }
+
+    private void TakeDamage(float damage)
+    {
+        CurrentHealth -= damage;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
     }
 
     private bool IsDead()
@@ -71,7 +76,8 @@ public class Blob : Entity
     {
         while (true)
         {
-            Mathf.Clamp(CurrentHealth += (1 * Emotions[EmotionType.Fear].Level), 0, _maxHealth);
+            CurrentHealth += (1 * Emotions[EmotionType.Fear].Level);
+            CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
             yield return new WaitForSeconds(1);
         }
     }
