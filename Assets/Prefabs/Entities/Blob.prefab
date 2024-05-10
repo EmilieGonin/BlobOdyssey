@@ -104,6 +104,8 @@ MonoBehaviour:
   _renderer: {fileID: 5445886764026869807}
   _healthBar: {fileID: 9215259241871374468}
   _maxHealth: 20
+  _baseEmotionGain: 20
+  _baseEmotionLose: 5
 --- !u!114 &-5604840252006337099
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class Blob : Entity
 
     [Header("Stats")]
     [SerializeField] private float _maxHealth = 20;
-    [SerializeField] private int _baseEmotionGain = 10;
+    [SerializeField] private int _baseEmotionGain = 20;
     [SerializeField] private int _baseEmotionLose = 5;
 
     public float MaxHealth => _maxHealth;
