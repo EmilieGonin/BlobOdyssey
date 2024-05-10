@@ -7,8 +7,5 @@ public class Module : MonoBehaviour
 
     protected GameManager _manager => GameManager.Instance;
 
-    private void Start()
-    {
-        OnModuleLoaded?.Invoke();
-    }
+    private void Start() => OnModuleLoaded?.Invoke();
 }

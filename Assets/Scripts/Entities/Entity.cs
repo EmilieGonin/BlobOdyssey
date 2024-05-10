@@ -12,5 +12,6 @@ public class Entity : MonoBehaviour
     {
         OnDeath?.Invoke(this);
         if (this is Asteroid) Destroy(gameObject);
+        if (this is Blob) (this as Blob).InitEmotions();
     }
 }

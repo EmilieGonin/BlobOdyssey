@@ -1,27 +1,45 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Blob : Entity
 {
+    [SerializeField] private ProgressBar _healthBar;
+
     [Header("Stats")]
     [SerializeField] private float _maxHealth = 20;
 
+    public float MaxHealth => _maxHealth;
+    public float CurrentHealth { get; private set; }
     public Dictionary<EmotionType, Emotion> Emotions { get; private set; }
 
-    private float _currentHealth;
+    private Coroutine _regen;
 
     private void Awake()
     {
-        WavesModule.OnWaveStart += WavesModule_OnWaveStart;
+        WavesModule.OnWaveStart += InitHealth;
         Asteroid.OnDamageInflicted += Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb += Asteroid_OnAbsorb;
+        ProtectAction.OnActivate += ProtectAction_OnActivate;
 
-        _currentHealth = _maxHealth;
+        InitHealth();
         InitEmotions();
     }
 
-    private void InitEmotions()
+    private void OnDestroy()
+    {
+        WavesModule.OnWaveStart -= InitHealth;
+        Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
+        Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
+        ProtectAction.OnActivate -= ProtectAction_OnActivate;
+    }
+
+    private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
+    private void InitHealth() => CurrentHealth = _maxHealth;
+    private void LoseEmotions() { foreach (var emotion in Enum.GetValues(typeof(EmotionType))) Emotions[(EmotionType)emotion].Substract(10); }
+
+    public void InitEmotions()
     {
         Emotions = new();
 
@@ -31,16 +49,37 @@ public class Blob : Entity
         }
     }
 
-    private void OnDestroy()
+    private void TakeDamage(float damage)
     {
-        WavesModule.OnWaveStart -= WavesModule_OnWaveStart;
-        Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
-        Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
+        CurrentHealth -= damage;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
     }
 
-    private void WavesModule_OnWaveStart()
+    private bool IsDead()
     {
-        _currentHealth = _maxHealth;
+        if (CurrentHealth <= 0) return true;
+        bool isDead = false;
+
+        foreach (var emotion in Enum.GetValues(typeof(EmotionType)))
+        {
+            if (Emotions[(EmotionType)emotion].IsOver)
+            {
+                isDead = true;
+                break;
+            }
+        }
+
+        return isDead;
+    }
+
+    private IEnumerator Regen()
+    {
+        while (true)
+        {
+            CurrentHealth += (1 * Emotions[EmotionType.Fear].Level);
+            CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
+            yield return new WaitForSeconds(1);
+        }
     }
 
     private void Asteroid_OnDamageInflicted(float damage)
@@ -61,42 +100,9 @@ public class Blob : Entity
         if (IsDead()) Death();
     }
 
-    private void TakeDamage(float damage)
+    private void ProtectAction_OnActivate(bool activated)
     {
-        _currentHealth -= damage;
-        Debug.Log($"<color=red>Lost {damage} HP !</color>");
-    }
-
-    private void LoseEmotions()
-    {
-        foreach (var emotion in Enum.GetValues(typeof(EmotionType)))
-        {
-            Emotions[(EmotionType)emotion].Substract(10);
-        }
-
-        Debug.Log($"<color=red>Lost -10% of each emotions !</color>");
-    }
-
-    private bool IsDead()
-    {
-        if (_currentHealth <= 0) return true;
-        bool isDead = false;
-
-        foreach (var emotion in Enum.GetValues(typeof(EmotionType)))
-        {
-            if (Emotions[(EmotionType)emotion].IsOver)
-            {
-                isDead = true;
-                break;
-            }
-        }
-
-        return isDead;
-    }
-
-    protected override void Death()
-    {
-        base.Death();
-        InitEmotions();
+        if (activated) _regen = StartCoroutine(Regen());
+        else if (_regen != null) StopCoroutine(_regen);
     }
 }

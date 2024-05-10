@@ -6,8 +6,5 @@ public class AsteroidBrain : Brain
 
     public int Speed => _speed;
 
-    private void Awake()
-    {
-        ChangeState(_follow);
-    }
+    private void Awake() => ChangeState(_follow);
 }

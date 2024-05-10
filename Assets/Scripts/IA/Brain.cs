@@ -7,13 +7,9 @@ public class Brain : MonoBehaviour
     // States
     protected IdleState _idle = new();
     protected ProtectState _protect = new();
-    protected DestructState _destruct = new();
     protected FollowState _follow = new();
 
-    private void Update()
-    {
-        _currentState?.OnUpdate();
-    }
+    private void Update() => _currentState?.OnUpdate();
 
     public void ChangeState(State state)
     {
