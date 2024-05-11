@@ -25,7 +25,8 @@ public class Blob : Entity
 
     private void Awake()
     {
-        WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
+        WavesModule.OnWaveStart += InitHealth;
+        GameOverPopup.OnRestart += InitEmotions;
         Asteroid.OnDamageInflicted += Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb += Asteroid_OnAbsorb;
         ProtectAction.OnProtectToggle += ToggleProtection;
@@ -40,7 +41,8 @@ public class Blob : Entity
 
     private void OnDestroy()
     {
-        WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
+        WavesModule.OnWaveStart -= InitHealth;
+        GameOverPopup.OnRestart -= InitEmotions;
         Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
         ProtectAction.OnProtectToggle -= ToggleProtection;
@@ -176,12 +178,6 @@ public class Blob : Entity
         GainEmotion(asteroid.Emotion);
         SetEmotion(asteroid.Emotion);
         if (IsDead()) Death();
-    }
-
-    private void WavesModule_OnWaveEnd(bool win)
-    {
-        InitHealth();
-        if (!win) InitEmotions();
     }
 
     private bool IsDead()
