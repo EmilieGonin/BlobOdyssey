@@ -16,7 +16,7 @@ public class ProtectAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private bool _isActivated = false;
 
     private void Awake() => Blob.OnProtectBroke += SetCooldown;
-    private void OnDestroy() => Blob.OnProtectBroke += SetCooldown;
+    private void OnDestroy() => Blob.OnProtectBroke -= SetCooldown;
 
     private void SetCooldown()
     {

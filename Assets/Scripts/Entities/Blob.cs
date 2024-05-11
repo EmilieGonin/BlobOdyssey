@@ -150,7 +150,13 @@ public class Blob : Entity
         if (_isProtected && ProtectCharges > 0)
         {
             ProtectCharges--;
-            if (ProtectCharges == 0) OnProtectBroke?.Invoke();
+
+            if (ProtectCharges == 0)
+            {
+                OnProtectBroke?.Invoke();
+                ToggleProtection(false);
+            }
+
             return;
         }
 
