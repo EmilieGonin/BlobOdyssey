@@ -126,8 +126,11 @@ public class Blob : Entity
                 _maxHealth += 10;
                 InitHealth();
                 break;
-            case EmotionType.Fear:
+            case EmotionType.Anger:
                 GameManager.Instance.AddCharge();
+                break;
+            case EmotionType.Fear:
+                ProtectCharges++;
                 break;
         }
     }
