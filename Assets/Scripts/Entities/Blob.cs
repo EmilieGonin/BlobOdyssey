@@ -48,7 +48,11 @@ public class Blob : Entity
         BlobBrain.OnStateChange -= BlobBrain_OnStateChange;
     }
 
-    private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
+    private void Update()
+    {
+        _healthBar.ToggleHUD(CurrentHealth != MaxHealth);
+        _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
+    }
 
     #region Health
     private void InitHealth() => CurrentHealth = _maxHealth;
