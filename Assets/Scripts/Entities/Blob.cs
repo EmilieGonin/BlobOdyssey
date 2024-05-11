@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Blob : Entity
 {
+    public static event Action OnProtectBroke;
+
     [SerializeField] private ProgressBar _healthBar;
 
     [Header("Stats")]
@@ -14,30 +16,36 @@ public class Blob : Entity
 
     public float MaxHealth => _maxHealth;
     public float CurrentHealth { get; private set; }
+    public int ProtectCharges { get; private set; } = 1;
     public Dictionary<EmotionType, Emotion> Emotions { get; private set; }
     public List<EmotionType> StrongestEmotions { get; private set; } = new();
 
     private Coroutine _regen;
+    private bool _isProtected = false;
 
     private void Awake()
     {
         WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
         Asteroid.OnDamageInflicted += Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb += Asteroid_OnAbsorb;
-        ProtectAction.OnActivate += ToggleProtection;
+        ProtectAction.OnProtectToggle += ToggleProtection;
         PowerPopup.OnEmotionSelect += LevelUpEmotion;
+        BlobBrain.OnStateChange += BlobBrain_OnStateChange;
 
         InitHealth();
         InitEmotions();
     }
+
+    private void BlobBrain_OnStateChange(State state) => _isProtected = state is ProtectState;
 
     private void OnDestroy()
     {
         WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
         Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
-        ProtectAction.OnActivate -= ToggleProtection;
+        ProtectAction.OnProtectToggle -= ToggleProtection;
         PowerPopup.OnEmotionSelect -= LevelUpEmotion;
+        BlobBrain.OnStateChange -= BlobBrain_OnStateChange;
     }
 
     private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
@@ -139,6 +147,13 @@ public class Blob : Entity
 
     private void Asteroid_OnDamageInflicted(float damage)
     {
+        if (_isProtected && ProtectCharges > 0)
+        {
+            ProtectCharges--;
+            if (ProtectCharges == 0) OnProtectBroke?.Invoke();
+            return;
+        }
+
         TakeDamage(damage);
         SetEmotion();
         if (IsDead()) Death();
