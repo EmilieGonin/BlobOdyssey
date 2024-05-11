@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: 8404996946157515832}
   - component: {fileID: 2943976205779930552}
   - component: {fileID: 3792831409708957002}
+  - component: {fileID: 8097647348239480691}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -389,6 +390,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &8097647348239480691
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777883161535711613}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &2106637255361141083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -481,6 +494,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 7124529789595509215, guid: 5d028c84fc5e97444bee72ac48f458e4, type: 3}
+      propertyPath: _canvas
+      value: 
+      objectReference: {fileID: 8097647348239480691}
     - target: {fileID: 7124529789595509215, guid: 5d028c84fc5e97444bee72ac48f458e4, type: 3}
       propertyPath: _barValue
       value: 0.358
