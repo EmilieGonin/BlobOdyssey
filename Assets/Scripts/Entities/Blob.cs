@@ -8,6 +8,7 @@ public class Blob : Entity
     public static event Action OnProtectBroke;
 
     [SerializeField] private ProgressBar _healthBar;
+    [SerializeField] private GameObject _shield;
 
     [Header("Stats")]
     [SerializeField] private float _maxHealth = 20;
@@ -130,8 +131,22 @@ public class Blob : Entity
     #region Protect Action
     private void ToggleProtection(bool activated)
     {
-        if (activated) _regen = StartCoroutine(Regen());
-        else if (_regen != null) StopCoroutine(_regen);
+        if (activated)
+        {
+            _regen = StartCoroutine(Regen());
+
+            if (ProtectCharges > 0)
+            {
+                _shield.SetActive(true);
+            }
+        }
+
+        else if (_regen != null)
+        {
+            StopCoroutine(_regen);
+            _shield.SetActive(false);
+        }
+
     }
 
     private IEnumerator Regen()
