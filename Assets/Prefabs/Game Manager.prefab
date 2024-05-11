@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5511150493144996799}
   - component: {fileID: 4644533541138461065}
   - component: {fileID: 3131358695848946800}
+  - component: {fileID: 1121571456176164134}
+  - component: {fileID: 8150517490480148741}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -51,6 +53,7 @@ MonoBehaviour:
   - {fileID: 3131358695848946800}
   _blobPrefab: {fileID: 4859736059853002363, guid: 96ae528db129ab647ae29a1a449cfc05, type: 3}
   _asteroidPrefab: {fileID: 8746775342509458711, guid: 18877b6443163e644a2730c501e73ff5, type: 3}
+  _chargesNumber: {fileID: 0}
   _maxDestructionCharges: 3
 --- !u!114 &4644533541138461065
 MonoBehaviour:
@@ -79,3 +82,65 @@ MonoBehaviour:
   _enemiesPerWave: 10
   _minSpawnCooldown: 1
   _maxSpawnCooldown: 3
+  OnGameOver:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1121571456176164134}
+        m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnVictory:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8150517490480148741}
+        m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1121571456176164134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289671512417560660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd096b8e2f460ac45bfdd5130c7eccc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneToLoad: GameOver
+  _loadAsAdditive: 1
+  _unloadCurrentScene: 1
+  _sceneToUnload: 
+--- !u!114 &8150517490480148741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289671512417560660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd096b8e2f460ac45bfdd5130c7eccc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneToLoad: Victory
+  _loadAsAdditive: 1
+  _unloadCurrentScene: 1
+  _sceneToUnload: 

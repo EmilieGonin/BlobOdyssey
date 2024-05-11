@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WavesModule : Module
 {
@@ -13,10 +14,14 @@ public class WavesModule : Module
     [SerializeField] private float _minSpawnCooldown = 1;
     [SerializeField] private float _maxSpawnCooldown = 3;
 
+    [Header("Events")]
+    [SerializeField] private UnityEvent OnGameOver;
+    [SerializeField] private UnityEvent OnVictory;
+
     public int EnemiesSpawned => _enemiesSpawned.Count;
+    public int WaveNumber { get; private set; } = 1;
 
     private int _enemiesKilled;
-    private int _waveNumber = 1;
     private Coroutine _spawner;
     private List<GameObject> _enemiesSpawned;
 
@@ -24,14 +29,14 @@ public class WavesModule : Module
     {
         Entity.OnDeath += Entity_OnDeath;
         PowerPopup.OnEmotionSelect += StartWave;
-        GameOverPopup.OnRestart += StartWave;
+        GameOverPopup.OnRestart += RestartWaves;
     }
 
     private void OnDestroy()
     {
         Entity.OnDeath -= Entity_OnDeath;
         PowerPopup.OnEmotionSelect -= StartWave;
-        GameOverPopup.OnRestart -= StartWave;
+        GameOverPopup.OnRestart -= RestartWaves;
     }
 
     private void Entity_OnDeath(Entity entity)
@@ -45,6 +50,12 @@ public class WavesModule : Module
         _enemiesKilled++;
 
         if (_enemiesKilled == _enemiesPerWave) Victory();
+    }
+
+    public void RestartWaves()
+    {
+        WaveNumber = 1;
+        StartWave();
     }
 
     public void StartWave()
@@ -73,8 +84,9 @@ public class WavesModule : Module
     private void Victory()
     {
         OnWaveEnd?.Invoke(true);
-        _waveNumber++;
-        StartWave(); // TODO -> show victory popup instead
+        WaveNumber++;
+        //StartWave(); // TODO -> show victory popup instead
+        OnVictory?.Invoke();
     }
 
     private void GameOver()
@@ -84,6 +96,6 @@ public class WavesModule : Module
         if (_spawner != null) StopCoroutine(_spawner);
         foreach (var asteroid in _enemiesSpawned) if (asteroid != null) Destroy(asteroid);
 
-        StartWave(); // TODO -> show game over popup instead
+        OnGameOver?.Invoke();
     }
 }

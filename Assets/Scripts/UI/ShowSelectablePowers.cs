@@ -6,21 +6,21 @@ public class ShowSelectablePowers : MonoBehaviour
 
     private void Awake()
     {
-        PowerPopup.OnEmotionSelect += PowerPopup_OnEmotionSelect;
+        //PowerPopup.OnEmotionSelect += PowerPopup_OnEmotionSelect;
 
         foreach (var emotion in GameManager.Instance.Blob.StrongestEmotions)
         {
-            Instantiate(_powerPrefab).GetComponent<PowerPopup>().Init(emotion);
+            Instantiate(_powerPrefab, transform).GetComponent<PowerPopup>().Init(emotion);
         }
     }
 
     private void OnDestroy()
     {
-        PowerPopup.OnEmotionSelect -= PowerPopup_OnEmotionSelect;
+        //PowerPopup.OnEmotionSelect -= PowerPopup_OnEmotionSelect;
     }
 
-    private void PowerPopup_OnEmotionSelect(EmotionType emotion)
-    {
-        gameObject.SetActive(false);
-    }
+    //private void PowerPopup_OnEmotionSelect(EmotionType emotion)
+    //{
+    //    gameObject.SetActive(false);
+    //}
 }
