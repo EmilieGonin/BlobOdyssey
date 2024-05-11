@@ -13,7 +13,6 @@ public class DestroyAction : MonoBehaviour
     public void Destroy()
     {
         if (!GameManager.Instance.CanTouch) return;
-
         GameManager.Instance.RemoveCharge();
         OnActivate?.Invoke();
     }
