@@ -32,6 +32,14 @@ public class WavesModule : Module
         DestroyAction.OnActivate += DestroyAction_OnActivate;
     }
 
+    private void OnDestroy()
+    {
+        Entity.OnDeath -= Entity_OnDeath;
+        PowerPopup.OnEmotionSelect -= StartWave;
+        GameOverPopup.OnRestart -= RestartWaves;
+        DestroyAction.OnActivate -= DestroyAction_OnActivate;
+    }
+
     private void DestroyAction_OnActivate()
     {
         if (_spawner != null) StopCoroutine(_spawner);
@@ -50,13 +58,6 @@ public class WavesModule : Module
 
         _spawner = StartCoroutine(SpawnEnemies());
         yield return null;
-    }
-
-    private void OnDestroy()
-    {
-        Entity.OnDeath -= Entity_OnDeath;
-        PowerPopup.OnEmotionSelect -= StartWave;
-        GameOverPopup.OnRestart -= RestartWaves;
     }
 
     private void Entity_OnDeath(Entity entity)
