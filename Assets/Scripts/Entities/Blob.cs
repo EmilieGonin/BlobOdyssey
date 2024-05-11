@@ -36,17 +36,21 @@ public class Blob : Entity
     }
 
     private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
+
     private void InitHealth() => CurrentHealth = _maxHealth;
     private void LoseEmotions() { foreach (var emotion in Enum.GetValues(typeof(EmotionType))) Emotions[(EmotionType)emotion].Substract(10); }
+    private void GainEmotion(EmotionType emotion) => Emotions[emotion].Add(20);
 
     public void InitEmotions()
     {
         Emotions = new();
 
-        foreach (var emotion in Enum.GetValues(typeof(EmotionType)))
+        foreach (EmotionType emotion in Enum.GetValues(typeof(EmotionType)))
         {
-            Emotions[(EmotionType)emotion] = new Emotion((EmotionType)emotion);
+            Emotions[emotion] = new Emotion(emotion);
         }
+
+        SetEmotion();
     }
 
     private void TakeDamage(float damage)
@@ -60,9 +64,9 @@ public class Blob : Entity
         if (CurrentHealth <= 0) return true;
         bool isDead = false;
 
-        foreach (var emotion in Enum.GetValues(typeof(EmotionType)))
+        foreach (EmotionType emotion in Enum.GetValues(typeof(EmotionType)))
         {
-            if (Emotions[(EmotionType)emotion].IsOver)
+            if (Emotions[emotion].IsOver)
             {
                 isDead = true;
                 break;
@@ -86,6 +90,7 @@ public class Blob : Entity
     {
         TakeDamage(damage);
         LoseEmotions();
+        SetEmotion();
         if (IsDead()) Death();
     }
 
@@ -94,9 +99,8 @@ public class Blob : Entity
         float damage = (asteroid.Damage / 2) / Emotions[EmotionType.Joy].Level;
         TakeDamage(damage);
         LoseEmotions();
-
-        Emotions[asteroid.Emotion].Add(20);
-        Debug.Log($"<color=lime>Gain +20% of {asteroid.Emotion}!</color>");
+        GainEmotion(asteroid.Emotion);
+        SetEmotion(asteroid.Emotion);
         if (IsDead()) Death();
     }
 
@@ -104,5 +108,15 @@ public class Blob : Entity
     {
         if (activated) _regen = StartCoroutine(Regen());
         else if (_regen != null) StopCoroutine(_regen);
+    }
+
+    private void SetEmotion(EmotionType currentEmotion = EmotionType.Joy)
+    {
+        foreach (EmotionType emotion in Enum.GetValues(typeof(EmotionType)))
+        {
+            if (Emotions[emotion].Value > Emotions[currentEmotion].Value) currentEmotion = emotion;
+        }
+
+        _renderer.color = EmotionPalette.GetColor(currentEmotion);
     }
 }
