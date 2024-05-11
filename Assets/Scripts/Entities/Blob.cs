@@ -25,7 +25,8 @@ public class Blob : Entity
 
     private void Awake()
     {
-        WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
+        WavesModule.OnWaveStart += InitHealth;
+        GameOverPopup.OnRestart += InitEmotions;
         Asteroid.OnDamageInflicted += Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb += Asteroid_OnAbsorb;
         ProtectAction.OnProtectToggle += ToggleProtection;
@@ -40,7 +41,8 @@ public class Blob : Entity
 
     private void OnDestroy()
     {
-        WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
+        WavesModule.OnWaveStart -= InitHealth;
+        GameOverPopup.OnRestart -= InitEmotions;
         Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
         Asteroid.OnAbsorb -= Asteroid_OnAbsorb;
         ProtectAction.OnProtectToggle -= ToggleProtection;
@@ -48,7 +50,11 @@ public class Blob : Entity
         BlobBrain.OnStateChange -= BlobBrain_OnStateChange;
     }
 
-    private void Update() => _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
+    private void Update()
+    {
+        _healthBar.ToggleHUD(CurrentHealth != MaxHealth);
+        _healthBar.UpdateValue((CurrentHealth / MaxHealth * 100) / 100);
+    }
 
     #region Health
     private void InitHealth() => CurrentHealth = _maxHealth;
@@ -120,8 +126,11 @@ public class Blob : Entity
                 _maxHealth += 10;
                 InitHealth();
                 break;
-            case EmotionType.Fear:
+            case EmotionType.Anger:
                 GameManager.Instance.AddCharge();
+                break;
+            case EmotionType.Fear:
+                ProtectCharges++;
                 break;
         }
     }
@@ -172,12 +181,6 @@ public class Blob : Entity
         GainEmotion(asteroid.Emotion);
         SetEmotion(asteroid.Emotion);
         if (IsDead()) Death();
-    }
-
-    private void WavesModule_OnWaveEnd(bool win)
-    {
-        InitHealth();
-        if (!win) InitEmotions();
     }
 
     private bool IsDead()

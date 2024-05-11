@@ -44,13 +44,13 @@ public class GameManager : MonoBehaviour
         DestructionCharges = _maxDestructionCharges;
 
         Module.OnModuleLoaded += Module_OnModuleLoaded;
-        WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
+        WavesModule.OnWaveStart += WavesModule_OnWaveStart;
     }
 
     private void OnDestroy()
     {
         Module.OnModuleLoaded -= Module_OnModuleLoaded;
-        WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
+        WavesModule.OnWaveStart -= WavesModule_OnWaveStart;
     }
 
     private void Update() => _chargesNumber.text = $"x {DestructionCharges}";
@@ -65,10 +65,10 @@ public class GameManager : MonoBehaviour
         DestructionCharges = Mathf.Clamp(DestructionCharges, 0, _maxDestructionCharges);
     }
 
-    private void WavesModule_OnWaveEnd(bool win)
+    private void WavesModule_OnWaveStart()
     {
-        if (win) AddCharge();
-        else DestructionCharges = _maxDestructionCharges;
+        if (Mod<WavesModule>().WaveNumber == 1) DestructionCharges = _maxDestructionCharges;
+        else AddCharge();
     }
 
     private void Module_OnModuleLoaded()
