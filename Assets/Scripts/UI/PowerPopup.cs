@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PowerPopup : MonoBehaviour, IPointerDownHandler
+public class PowerPopup : MonoBehaviour, IPointerUpHandler
 {
     public static event Action<EmotionType> OnEmotionSelect;
 
@@ -19,8 +19,5 @@ public class PowerPopup : MonoBehaviour, IPointerDownHandler
         _name.color = EmotionPalette.GetColor(emotion);
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        OnEmotionSelect?.Invoke(_emotion);
-    }
+    public void OnPointerUp(PointerEventData eventData) => OnEmotionSelect?.Invoke(_emotion);
 }
