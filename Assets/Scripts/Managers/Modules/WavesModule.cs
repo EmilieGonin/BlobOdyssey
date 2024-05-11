@@ -29,6 +29,7 @@ public class WavesModule : Module
         Entity.OnDeath += Entity_OnDeath;
         PowerPopup.OnEmotionSelect += StartWave;
         GameOverPopup.OnRestart += RestartWaves;
+        DestroyAction.OnActivate += DestroyAction_OnActivate;
     }
 
     private void OnDestroy()
@@ -36,6 +37,27 @@ public class WavesModule : Module
         Entity.OnDeath -= Entity_OnDeath;
         PowerPopup.OnEmotionSelect -= StartWave;
         GameOverPopup.OnRestart -= RestartWaves;
+        DestroyAction.OnActivate -= DestroyAction_OnActivate;
+    }
+
+    private void DestroyAction_OnActivate()
+    {
+        if (_spawner != null) StopCoroutine(_spawner);
+        StartCoroutine(Cooldown());
+    }
+
+    private IEnumerator Cooldown()
+    {
+        int cooldown = 2;
+
+        while (cooldown > 0)
+        {
+            yield return new WaitForSeconds(1);
+            cooldown -= 1;
+        }
+
+        _spawner = StartCoroutine(SpawnEnemies());
+        yield return null;
     }
 
     private void Entity_OnDeath(Entity entity)
@@ -60,6 +82,8 @@ public class WavesModule : Module
     public void StartWave()
     {
         OnWaveStart?.Invoke();
+        _enemiesSpawned = new();
+        _enemiesKilled = 0;
         _spawner = StartCoroutine(SpawnEnemies());
     }
 
@@ -67,9 +91,6 @@ public class WavesModule : Module
 
     private IEnumerator SpawnEnemies()
     {
-        _enemiesSpawned = new();
-        _enemiesKilled = 0;
-
         while (_enemiesSpawned.Count < _enemiesPerWave)
         {
             GameObject asteroid = Instantiate(_manager.AsteroidPrefab);

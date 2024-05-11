@@ -42,7 +42,7 @@ public class ProtectAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!_canActivate) return;
+        if (_isActivated || !_canActivate) return;
         OnProtectToggle?.Invoke(true);
         _isActivated = true;
     }
