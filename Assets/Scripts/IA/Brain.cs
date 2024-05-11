@@ -11,7 +11,7 @@ public class Brain : MonoBehaviour
 
     private void Update() => _currentState?.OnUpdate();
 
-    public void ChangeState(State state)
+    public virtual void ChangeState(State state)
     {
         _currentState?.OnExit();
         _currentState = state;
