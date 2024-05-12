@@ -90,7 +90,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 0}
   _value: 1
-  _rectTransform: {fileID: 5207172422033009574}
+  _image: {fileID: 6109080058119470871}
 --- !u!1 &8264462078914596724
 GameObject:
   m_ObjectHideFlags: 0
