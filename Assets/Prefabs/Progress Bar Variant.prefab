@@ -149,7 +149,9 @@ PrefabInstance:
       value: Progress Bar Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2347110320197610212, guid: 59781274a33684a43901905da85f0855, type: 3}
+    - {fileID: 6163933016211704149, guid: 59781274a33684a43901905da85f0855, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59781274a33684a43901905da85f0855, type: 3}
