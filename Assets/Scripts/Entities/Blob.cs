@@ -160,11 +160,14 @@ public class Blob : Entity
 
     private IEnumerator Regen()
     {
+        float cd = 0.5f;
+
         while (true)
         {
+            yield return new WaitForSeconds(cd);
             CurrentHealth += (1 * Emotions[EmotionType.Fear].Level);
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
-            yield return new WaitForSeconds(1);
+            cd = 1;
         }
     }
     #endregion

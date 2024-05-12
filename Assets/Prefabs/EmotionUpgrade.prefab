@@ -311,6 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: {fileID: 8349693627112500752}
   _description: {fileID: 8810428251729415066}
+  _data: {fileID: 11400000, guid: 967f2ae5717220846b0c7748535df1c8, type: 2}
 --- !u!114 &3243092409159737073
 MonoBehaviour:
   m_ObjectHideFlags: 0
