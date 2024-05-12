@@ -24,6 +24,7 @@ public class WavesModule : Module
 
     private int _enemiesKilled;
     private Coroutine _spawner;
+    private Coroutine _cooldown;
     private List<GameObject> _enemiesSpawned;
 
     private void Awake()
@@ -45,7 +46,8 @@ public class WavesModule : Module
     private void DestroyAction_OnActivate()
     {
         if (_spawner != null) StopCoroutine(_spawner);
-        StartCoroutine(Cooldown());
+        if (_cooldown != null) StopCoroutine(_cooldown);
+        _cooldown = StartCoroutine(Cooldown());
     }
 
     private IEnumerator Cooldown()
