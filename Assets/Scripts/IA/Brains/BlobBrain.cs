@@ -26,7 +26,7 @@ public class BlobBrain : Brain
     public override void ChangeState(State state)
     {
         base.ChangeState(state);
-        Debug.Log($"Blob new state : {state}");
+        //Debug.Log($"Blob new state : {state}");
         OnStateChange?.Invoke(state);
     }
 }

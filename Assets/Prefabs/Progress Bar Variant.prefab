@@ -148,7 +148,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Progress Bar Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5404084667939189721, guid: 59781274a33684a43901905da85f0855, type: 3}
+    - {fileID: 7496653245164146719, guid: 59781274a33684a43901905da85f0855, type: 3}
     m_RemovedGameObjects:
     - {fileID: 2347110320197610212, guid: 59781274a33684a43901905da85f0855, type: 3}
     - {fileID: 6163933016211704149, guid: 59781274a33684a43901905da85f0855, type: 3}

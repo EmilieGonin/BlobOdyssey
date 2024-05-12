@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8745626664721802770}
   - component: {fileID: 6109080058119470871}
   - component: {fileID: 2078576444550590012}
+  - component: {fileID: 7496653245164146719}
   m_Layer: 5
   m_Name: Bar
   m_TagString: Untagged
@@ -91,6 +92,20 @@ MonoBehaviour:
   _canvas: {fileID: 0}
   _image: {fileID: 6109080058119470871}
   _value: 1
+--- !u!114 &7496653245164146719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498635558377948850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9defdc91a2ad04b8b3750fe6263891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: {fileID: 2186078878396651780}
+  _level: {fileID: 245777382148075246}
 --- !u!1 &2347110320197610212
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +118,7 @@ GameObject:
   - component: {fileID: 8170682893323883279}
   - component: {fileID: 2186078878396651780}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: EmotionName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,7 +171,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SADNESS
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -237,7 +252,7 @@ GameObject:
   - component: {fileID: 381590998612708448}
   - component: {fileID: 245777382148075246}
   m_Layer: 5
-  m_Name: lvl
+  m_Name: EmotionLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
 
         Module.OnModuleLoaded += Module_OnModuleLoaded;
         WavesModule.OnWaveStart += WavesModule_OnWaveStart;
+        Tutorial.OnComplete += Mod<WavesModule>().StartWave;
 
         SceneManager.LoadSceneAsync(_tutoScene, LoadSceneMode.Additive);
     }
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
     {
         Module.OnModuleLoaded -= Module_OnModuleLoaded;
         WavesModule.OnWaveStart -= WavesModule_OnWaveStart;
+        Tutorial.OnComplete -= Mod<WavesModule>().StartWave;
     }
 
     private void Update() => _chargesNumber.text = $"x {DestructionCharges}";
@@ -96,7 +98,7 @@ public class GameManager : MonoBehaviour
     private void CompleteInit()
     {
         Debug.Log("<color=yellow>Game Manager init completed.</color>");
-        StartCoroutine(StartTutorial());
+        //StartCoroutine(StartTutorial());
         SpawnBlob();
     }
 

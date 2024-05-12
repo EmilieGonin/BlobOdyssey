@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ProtectAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private TMP_Text _cooldown;
+    [SerializeField] private Image _cooldown;
     [SerializeField] private Button _button;
 
     public static event Action<bool> OnProtectToggle;
@@ -23,6 +23,7 @@ public class ProtectAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         _isActivated = false;
         _canActivate = false;
         _button.interactable = false;
+        _cooldown.enabled = true;
         StartCoroutine(Cooldown());
     }
 
@@ -34,10 +35,12 @@ public class ProtectAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         {
             yield return new WaitForSeconds(1);
             cooldown -= 1;
+            _cooldown.fillAmount -= 0.2f;
         }
 
         _canActivate = true;
         _button.interactable = true;
+        _cooldown.enabled = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
