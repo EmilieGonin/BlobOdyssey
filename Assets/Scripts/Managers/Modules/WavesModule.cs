@@ -18,6 +18,7 @@ public class WavesModule : Module
     [SerializeField] private UnityEvent OnGameOver;
     [SerializeField] private UnityEvent OnVictory;
 
+    public int EnemiesPerWave => _enemiesPerWave;
     public int EnemiesSpawned => _enemiesSpawned.Count;
     public int WaveNumber { get; private set; } = 1;
 
