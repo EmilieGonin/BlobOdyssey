@@ -12,8 +12,11 @@ public class ProgressBar : MonoBehaviour
 
     public float Value => _value;
 
-    void Update() => _rectTransform.localScale = new(_rectTransform.localScale.x, _value, _rectTransform.localScale.z); 
-    private void OnValueChangedCallback() => _rectTransform.localScale = new(_rectTransform.localScale.x, _value, _rectTransform.localScale.z);
+    void Update() => UpdateScale();
+    private void OnValueChangedCallback() => UpdateScale();
     public void UpdateValue(float value) => _value = value;
     public void ToggleHUD(bool toggle) => _canvas.alpha = toggle ? 1 : 0;
+
+    //private void UpdateScale() => _rectTransform.localScale = new(_rectTransform.localScale.x, _value, _rectTransform.localScale.z);
+    private void UpdateScale() => _rectTransform.localScale = new(_value, _rectTransform.localScale.y, _rectTransform.localScale.z);
 }

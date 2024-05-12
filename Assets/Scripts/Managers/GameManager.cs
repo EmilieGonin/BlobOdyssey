@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public static event Action OnChargeGain;
 
     [Header("Modules")]
     [SerializeField] private List<Module> _modules = new();
@@ -72,11 +74,16 @@ public class GameManager : MonoBehaviour
     {
         DestructionCharges++;
         DestructionCharges = Mathf.Clamp(DestructionCharges, 0, _maxDestructionCharges);
+        OnChargeGain?.Invoke();
     }
 
     private void WavesModule_OnWaveStart()
     {
-        if (Mod<WavesModule>().WaveNumber == 1) DestructionCharges = _maxDestructionCharges;
+        if (Mod<WavesModule>().WaveNumber == 1)
+        {
+            DestructionCharges = _maxDestructionCharges;
+            OnChargeGain?.Invoke();
+        }
         else AddCharge();
     }
 
