@@ -7,8 +7,15 @@ public class Blob : Entity
 {
     public static event Action OnProtectBroke;
 
+    [SerializeField] private Sprite _neutral;
     [SerializeField] private ProgressBar _healthBar;
     [SerializeField] private GameObject _shield;
+
+    [Header("Animations")]
+    [SerializeField] private Animation _animation;
+    [SerializeField] private AnimationClip _fadeIn;
+    [SerializeField] private AnimationClip _fadeOut;
+    [SerializeField] private SpriteRenderer _transitionRenderer;
 
     [Header("Stats")]
     [SerializeField] private float _maxHealth = 20;
@@ -114,7 +121,17 @@ public class Blob : Entity
 
         if (!StrongestEmotions.Contains(currentEmotion)) currentEmotion = StrongestEmotions[0];
 
-        _renderer.color = EmotionPalette.GetColor(currentEmotion);
+        StartCoroutine(ChangeColor(currentEmotion));
+    }
+
+    private IEnumerator ChangeColor(EmotionType emotion)
+    {
+        _transitionRenderer.sprite = _sprites[emotion];
+        _animation.Play(_fadeOut.name);
+        yield return new WaitForSeconds(_fadeOut.length);
+        _renderer.sprite = _sprites[emotion];
+        _animation.Play(_fadeIn.name);
+        yield return new WaitForSeconds(_fadeIn.length);
     }
 
     private void LevelUpEmotion(EmotionType emotion)
@@ -188,7 +205,7 @@ public class Blob : Entity
         }
 
         TakeDamage(damage);
-        SetEmotion();
+        //SetEmotion();
         if (IsDead()) Death();
     }
 
@@ -201,7 +218,7 @@ public class Blob : Entity
         if (IsDead()) Death();
     }
 
-    private bool IsDead()
+    public bool IsDead()
     {
         if (CurrentHealth <= 0) return true;
         bool isDead = false;

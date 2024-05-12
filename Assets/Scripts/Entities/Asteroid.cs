@@ -7,6 +7,8 @@ public class Asteroid : Entity
     public static event Action<float> OnDamageInflicted;
     public static event Action<Asteroid> OnAbsorb;
 
+    [SerializeField] private TrailRenderer _trail;
+    [SerializeField] private ParticleSystem _particles;
     [SerializeField, Tag] private string _blobTag;
 
     [Header("Stats")]
@@ -25,7 +27,10 @@ public class Asteroid : Entity
         SetAsteroidSize();
         SetPositionOutsideViewport();
 
-        _renderer.color = EmotionPalette.GetColor(Emotion);
+        _renderer.sprite = _sprites[Emotion];
+        ParticleSystem.MainModule main = _particles.main;
+        main.startColor = EmotionPalette.GetColor(Emotion);
+        _trail.startColor = EmotionPalette.GetColor(Emotion);
 
         gameObject.name = $"Asteroid of {Enum.GetName(typeof(EmotionType), Emotion)} [#{GameManager.Instance.Mod<WavesModule>().EnemiesSpawned + 1}]";
     }
@@ -50,6 +55,7 @@ public class Asteroid : Entity
     {
         bool isBig = UnityEngine.Random.Range(1, 100) < _bigSizeChance;
         Damage = isBig ? _baseDamage * 2 : _baseDamage;
+        if (isBig) transform.localScale = new(1.5f, 1.5f, 1.5f);
     }
 
     private void SetPositionOutsideViewport()
