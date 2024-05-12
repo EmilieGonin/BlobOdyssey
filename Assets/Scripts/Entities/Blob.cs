@@ -11,6 +11,12 @@ public class Blob : Entity
     [SerializeField] private ProgressBar _healthBar;
     [SerializeField] private GameObject _shield;
 
+    [Header("Animations")]
+    [SerializeField] private Animation _animation;
+    [SerializeField] private AnimationClip _fadeIn;
+    [SerializeField] private AnimationClip _fadeOut;
+    [SerializeField] private SpriteRenderer _transitionRenderer;
+
     [Header("Stats")]
     [SerializeField] private float _maxHealth = 20;
     [SerializeField] private int _baseEmotionGain = 20;
@@ -115,8 +121,17 @@ public class Blob : Entity
 
         if (!StrongestEmotions.Contains(currentEmotion)) currentEmotion = StrongestEmotions[0];
 
-        //_renderer.color = EmotionPalette.GetColor(currentEmotion);
-        _renderer.sprite = _sprites[currentEmotion];
+        StartCoroutine(ChangeColor(currentEmotion));
+    }
+
+    private IEnumerator ChangeColor(EmotionType emotion)
+    {
+        _transitionRenderer.sprite = _sprites[emotion];
+        _animation.Play(_fadeOut.name);
+        yield return new WaitForSeconds(_fadeOut.length);
+        _renderer.sprite = _sprites[emotion];
+        _animation.Play(_fadeIn.name);
+        yield return new WaitForSeconds(_fadeIn.length);
     }
 
     private void LevelUpEmotion(EmotionType emotion)
