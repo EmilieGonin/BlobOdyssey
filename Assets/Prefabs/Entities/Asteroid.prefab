@@ -114,6 +114,8 @@ MonoBehaviour:
       Value: {fileID: 21300000, guid: 7c487489c732e8245ae7b8c95c8ee483, type: 3}
     - Key: 3
       Value: {fileID: 21300000, guid: fc9749cc62871f14588177bf9ca9b96e, type: 3}
+  _trail: {fileID: 6673220175603846469}
+  _particles: {fileID: 1633204337841932661}
   _blobTag: Player
   _baseDamage: 5
   _bigSizeChance: 10
