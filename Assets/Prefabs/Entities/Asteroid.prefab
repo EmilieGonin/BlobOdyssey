@@ -104,6 +104,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 8658756784974656452}
+  _sprites:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 21300000, guid: 682dd822a514f1440be64bf970acb9fe, type: 3}
+    - Key: 1
+      Value: {fileID: 21300000, guid: 0300491ccea5b0f449fc4cf758dbe50c, type: 3}
+    - Key: 2
+      Value: {fileID: 21300000, guid: 7c487489c732e8245ae7b8c95c8ee483, type: 3}
+    - Key: 3
+      Value: {fileID: 21300000, guid: fc9749cc62871f14588177bf9ca9b96e, type: 3}
   _blobTag: Player
   _baseDamage: 5
   _bigSizeChance: 10

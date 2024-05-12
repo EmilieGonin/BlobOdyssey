@@ -25,7 +25,8 @@ public class Asteroid : Entity
         SetAsteroidSize();
         SetPositionOutsideViewport();
 
-        _renderer.color = EmotionPalette.GetColor(Emotion);
+        //_renderer.color = EmotionPalette.GetColor(Emotion);
+        _renderer.sprite = _sprites[Emotion];
 
         gameObject.name = $"Asteroid of {Enum.GetName(typeof(EmotionType), Emotion)} [#{GameManager.Instance.Mod<WavesModule>().EnemiesSpawned + 1}]";
     }

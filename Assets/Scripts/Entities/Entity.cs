@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class Entity : MonoBehaviour
 
     [Header("Dependencies")]
     [SerializeField] protected SpriteRenderer _renderer;
+    [SerializeField] protected SerializedDictionary<EmotionType, Sprite> _sprites;
 
     protected virtual void Death()
     {

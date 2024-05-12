@@ -7,6 +7,7 @@ public class Blob : Entity
 {
     public static event Action OnProtectBroke;
 
+    [SerializeField] private Sprite _neutral;
     [SerializeField] private ProgressBar _healthBar;
     [SerializeField] private GameObject _shield;
 
@@ -114,7 +115,8 @@ public class Blob : Entity
 
         if (!StrongestEmotions.Contains(currentEmotion)) currentEmotion = StrongestEmotions[0];
 
-        _renderer.color = EmotionPalette.GetColor(currentEmotion);
+        //_renderer.color = EmotionPalette.GetColor(currentEmotion);
+        _renderer.sprite = _sprites[currentEmotion];
     }
 
     private void LevelUpEmotion(EmotionType emotion)
