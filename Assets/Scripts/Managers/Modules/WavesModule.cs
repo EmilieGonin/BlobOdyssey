@@ -70,7 +70,7 @@ public class WavesModule : Module
 
         _enemiesKilled++;
 
-        if (_enemiesKilled == _enemiesPerWave) Victory();
+        if (_enemiesKilled == _enemiesPerWave && !GameManager.Instance.Blob.IsDead()) Victory();
     }
 
     public void RestartWaves()
