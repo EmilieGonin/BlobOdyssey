@@ -19,6 +19,8 @@ public class AudioModule : Module
         Asteroid.OnDamageInflicted += Asteroid_OnDamageInflicted;
         WavesModule.OnWaveStart += WavesModule_OnWaveStart;
         WavesModule.OnWaveEnd += WavesModule_OnWaveEnd;
+        ProtectAction.OnProtectToggle += ProtectAction_OnProtectToggle;
+        Blob.OnProtectBroke += Blob_OnProtectBroke;
     }
 
     private void OnDestroy()
@@ -28,6 +30,8 @@ public class AudioModule : Module
         Asteroid.OnDamageInflicted -= Asteroid_OnDamageInflicted;
         WavesModule.OnWaveStart -= WavesModule_OnWaveStart;
         WavesModule.OnWaveEnd -= WavesModule_OnWaveEnd;
+        ProtectAction.OnProtectToggle -= ProtectAction_OnProtectToggle;
+        Blob.OnProtectBroke -= Blob_OnProtectBroke;
     }
 
     private void DestroyAction_OnActivate() => _source.PlayOneShot(_destroy);
@@ -40,4 +44,12 @@ public class AudioModule : Module
         if (win) _source.PlayOneShot(_victory);
         else _source.PlayOneShot(_gameOver);
     }
+
+    private void ProtectAction_OnProtectToggle(bool toggle)
+    {
+        if (toggle) _source.Play();
+        else if (_source.isPlaying) _source.Stop();
+    }
+
+    private void Blob_OnProtectBroke() => _source.Stop();
 }
