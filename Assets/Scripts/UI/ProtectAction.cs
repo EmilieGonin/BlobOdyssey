@@ -29,7 +29,6 @@ public class ProtectAction : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     private IEnumerator Cooldown()
     {
-        int maxCooldown = 5;
         int cooldown = 5;
 
         while (cooldown > 0)
