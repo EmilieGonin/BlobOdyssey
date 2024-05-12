@@ -384,7 +384,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 8/12
+  m_text: 0/10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -680,6 +680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 502167952}
   - component: {fileID: 502167953}
+  - component: {fileID: 502167954}
   m_Layer: 5
   m_Name: Target Remain
   m_TagString: Untagged
@@ -734,6 +735,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &502167954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502167951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02101382ddcbef849967f0aa595c1e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targets: {fileID: 369616305}
 --- !u!114 &521154867 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2078576444550590012, guid: 59781274a33684a43901905da85f0855, type: 3}
