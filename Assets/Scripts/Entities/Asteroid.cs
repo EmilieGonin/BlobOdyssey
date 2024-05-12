@@ -55,6 +55,7 @@ public class Asteroid : Entity
     {
         bool isBig = UnityEngine.Random.Range(1, 100) < _bigSizeChance;
         Damage = isBig ? _baseDamage * 2 : _baseDamage;
+        if (isBig) transform.localScale = new(1.2f, 1.2f, 1.2f);
     }
 
     private void SetPositionOutsideViewport()
