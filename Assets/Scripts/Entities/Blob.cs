@@ -205,7 +205,7 @@ public class Blob : Entity
         }
 
         TakeDamage(damage);
-        SetEmotion();
+        //SetEmotion();
         if (IsDead()) Death();
     }
 
@@ -218,7 +218,7 @@ public class Blob : Entity
         if (IsDead()) Death();
     }
 
-    private bool IsDead()
+    public bool IsDead()
     {
         if (CurrentHealth <= 0) return true;
         bool isDead = false;
