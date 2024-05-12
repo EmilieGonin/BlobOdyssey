@@ -55,8 +55,10 @@ MonoBehaviour:
   - {fileID: 3131358695848946800}
   _blobPrefab: {fileID: 4859736059853002363, guid: 96ae528db129ab647ae29a1a449cfc05, type: 3}
   _asteroidPrefab: {fileID: 8746775342509458711, guid: 18877b6443163e644a2730c501e73ff5, type: 3}
+  _tutoScene: Tuto
   _chargesNumber: {fileID: 0}
   _maxDestructionCharges: 3
+  _tutorialTimer: 3
 --- !u!114 &4644533541138461065
 MonoBehaviour:
   m_ObjectHideFlags: 0

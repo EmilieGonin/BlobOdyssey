@@ -1,7 +1,10 @@
+using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,11 +17,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _blobPrefab;
     [SerializeField] private GameObject _asteroidPrefab;
 
+    [Header("Scenes")]
+    [SerializeField, Scene] private string _tutoScene;
+
     [Header("Dependencies")]
     [SerializeField] private TMP_Text _chargesNumber;
 
     [Header("Settings")]
     [SerializeField] private int _maxDestructionCharges = 3;
+    [SerializeField] private float _tutorialTimer = 3;
 
     public Blob Blob { get; private set; }
     public bool CanTouch { get; set; }
@@ -45,6 +52,8 @@ public class GameManager : MonoBehaviour
 
         Module.OnModuleLoaded += Module_OnModuleLoaded;
         WavesModule.OnWaveStart += WavesModule_OnWaveStart;
+
+        SceneManager.LoadSceneAsync(_tutoScene, LoadSceneMode.Additive);
     }
 
     private void OnDestroy()
@@ -79,8 +88,16 @@ public class GameManager : MonoBehaviour
 
     private void CompleteInit()
     {
-        SpawnBlob();
-        Mod<WavesModule>().StartWave();
         Debug.Log("<color=yellow>Game Manager init completed.</color>");
+        StartCoroutine(StartTutorial());
+        SpawnBlob();
+    }
+
+    private IEnumerator StartTutorial()
+    {
+        yield return new WaitForSeconds(_tutorialTimer);
+        SceneManager.UnloadSceneAsync(_tutoScene);
+        Mod<WavesModule>().StartWave();
+        yield return null;
     }
 }
