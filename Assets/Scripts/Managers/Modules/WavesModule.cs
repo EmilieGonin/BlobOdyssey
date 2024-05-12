@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class WavesModule : Module
 {
     public static event Action OnWaveStart;
+    public static event Action<bool> OnWaveEnd;
 
     [Header("Settings")]
     [SerializeField] private int _enemiesPerWave = 10;
@@ -105,6 +106,7 @@ public class WavesModule : Module
     {
         WaveNumber++;
         OnVictory?.Invoke();
+        OnWaveEnd?.Invoke(true);
     }
 
     private void GameOver()
@@ -112,5 +114,6 @@ public class WavesModule : Module
         if (_spawner != null) StopCoroutine(_spawner);
         foreach (var asteroid in _enemiesSpawned) if (asteroid != null) Destroy(asteroid);
         OnGameOver?.Invoke();
+        OnWaveEnd?.Invoke(false);
     }
 }
