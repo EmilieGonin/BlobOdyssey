@@ -10,6 +10,8 @@ public class Blob : Entity
     [SerializeField] private Sprite _neutral;
     [SerializeField] private ProgressBar _healthBar;
     [SerializeField] private GameObject _shield;
+    [SerializeField] private ParticleSystem _healingParticles;
+
 
     [Header("Animations")]
     [SerializeField] private Animation _animation;
@@ -160,6 +162,7 @@ public class Blob : Entity
         if (activated)
         {
             _regen = StartCoroutine(Regen());
+            _healingParticles.Play();
 
             if (ProtectCharges > 0)
             {
@@ -170,6 +173,7 @@ public class Blob : Entity
         else if (_regen != null)
         {
             StopCoroutine(_regen);
+            _healingParticles.Stop();
             _shield.SetActive(false);
         }
 
